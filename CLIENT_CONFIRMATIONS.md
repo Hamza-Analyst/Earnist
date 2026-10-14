@@ -1,0 +1,23 @@
+# Earnist refinement: decisions for Adrian
+
+- Documentation score: the prototype now scores reviewed expenses with a positive business allocation. Each receives one point for an attached receipt and one for a nonblank business-purpose note; score = earned points / (2 × eligible expenses), rounded to a whole percent. With no eligible expenses, show an em dash. Home, Ready to file, and the downloaded report use this same score. It measures record completeness only, not deduction eligibility or audit readiness. Earnist should approve this policy before production use.
+- Find more deductions: the prototype now prompts users to review home workspace, driving and travel, tools and subscriptions, and outside help. Each checkbox means the user reviewed records for that area; it does not mark an expense deductible. This is proposed copy for Earnist approval before production use. Sources: [IRS Schedule C instructions](https://www.irs.gov/instructions/i1040sc), [IRS recordkeeping guidance](https://www.irs.gov/businesses/small-businesses-self-employed/what-kind-of-records-should-i-keep).
+- Pricing and trial: the public [Earnist website](https://earnist.app/) reviewed on October 9, 2026 lists Pro at $6/month and free manual tracking. The web prototype uses that price in an explanatory Pro preview, after persona creation. Neither access choice creates a subscription. Confirm trial duration, eligibility, billing/conversion rules, any annual plan, and whether public pricing also applies to this onboarding. Mobile skips the plan choice. Confirm authenticated web/mobile account handoff.
+- Final AI review: no integration exists. The clearly labelled prototype interaction summarizes documentation gaps; it does not analyze tax eligibility. Confirm intended checks, blockers, and scoring behavior.
+- Statements: existing CSV import is reused for reconciliation; PDFs/images are stored and previewed without extraction. Confirm production extraction, reconciliation tolerances, supported formats, and required account-period coverage. Current duplicate heuristic uses account/date/normalized description/amount/type; identical source files are blocked by fingerprint per account.
+- Reports: one downloadable HTML report embeds available statements and receipts and preserves existing CSV exports and Print / Save PDF. Confirm the final accountant package format (PDF/ZIP/etc.) and whether incomplete documentation must block export. HTML draft export remains available in Reports.
+- CPA: finished placeholder opens an explanatory state. Confirm marketplace launch copy and eventual matching/booking behavior.
+
+## Implementation choices
+
+Existing React/TypeScript/Vite, routing, palette, data adapter, account records, receipt store, and rules are retained. Primary navigation is Home / Swipe / Ready to file / Reports / More. Sessions contain at most 20 expenses; skipped items stay pending and can be resumed. Delete moves records and receipts to restorable trash; permanent deletion removes unused evidence. Income and mileage remain available in More. No backend, deployment, autonomous sorting agent, or landing-page work was added. Developer presentation material remains outside primary customer navigation.
+
+
+## Updated client brief and public reference review (October 9, 2026)
+
+- Preserved the prototype's layout and lime/black/white visual direction; aligned the brand mark with the public square E and retained the public site's emphasis on getting to the first swipe quickly.
+- Inspected the public landing and signup screens without creating an account. The authenticated app, documentation scoring policy, and deduction-area content are not visible publicly. A demo login or approved screen captures would let us compare the production flows directly.
+- Corrected the order to persona, web access choice, then sample transactions / first swipe. Existing persona fields are reused; optional business/tax details remain in Profile. Mobile remains a companion preview.
+- Ready to file includes explicit completion confirmations for swipes and final statements, four record-review prompts, demo final review, calculated documentation score, and one downloadable report with supporting files.
+- The separate autonomous sorting agent remains outside this prototype. Its feasibility and delivery estimate need a separate discussion of bank/statement access, review controls, and the production environment.
+- Planning suggestion for the client's first-prototype window: October 20-23, 2026 (1.5-2 weeks after October 9), subject to the team's capacity and prompt confirmation of the missing content. This is a planning target, not a committed delivery date.

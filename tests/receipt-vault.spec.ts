@@ -1,0 +1,32 @@
+import { test, expect } from '@playwright/test';
+const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aD1sAAAAASUVORK5CYII=','base64');
+test('Receipt vault persists unmatched files and matches them to transactions',async({page})=>{
+  await page.goto('/');
+  await page.getByRole('button',{name:'Try with sample data',exact:true}).click();
+  await page.getByRole('button',{name:'Skip for now',exact:true}).click();
+  await expect(page.locator('.onboarding-panel h1')).toHaveText(/A little less admin\.|Your persona is ready\./);
+  const trial=page.getByRole('button',{name:'Finish free trial',exact:true});
+  if(await trial.isVisible())await trial.click();
+  await page.getByRole('button',{name:'Use sample transactions',exact:true}).click();
+  await expect(page.getByRole('heading',{name:'Adobe Creative Cloud',exact:true})).toBeVisible();
+  await page.goto('/receipts');
+  await expect(page.getByRole('heading',{name:'Nothing waiting to match.',exact:true})).toBeVisible();
+  await page.getByLabel('Upload vault receipt',{exact:true}).setInputFiles({name:'client-receipt.png',mimeType:'image/png',buffer:png});
+  await expect(page.getByRole('button',{name:'Unmatched 1',exact:true})).toHaveAttribute('aria-pressed','true');
+  // Saving another record must not discard the unmatched file during storage cleanup.
+  await page.goto('/review');
+  await page.locator('.card-notes textarea').fill('Client work');
+  await page.reload();
+  await expect(page.locator('.card-notes textarea')).toHaveValue('Client work');
+  await page.goto('/receipts');
+  await page.getByRole('button',{name:'View receipt',exact:true}).click();
+  await expect(page.getByRole('dialog').getByRole('img',{name:'client-receipt.png',exact:true})).toBeVisible();
+  await page.getByRole('button',{name:'Close dialog',exact:true}).click();
+  await page.getByRole('button',{name:'Match to expense',exact:true}).click();
+  await page.getByRole('dialog').getByRole('button',{name:/Adobe Creative Cloud 2026-10-06/}).click();
+  await expect(page.getByRole('button',{name:'Matched 1',exact:true})).toHaveAttribute('aria-pressed','true');
+  await page.reload();
+  await page.getByRole('button',{name:'Matched 1',exact:true}).click();
+  await page.locator('.transaction-row').locator('.row-category').click();
+  await expect(page.getByAltText('Receipt attached to Adobe Creative Cloud')).toBeVisible();
+});

@@ -1,0 +1,11 @@
+node_modules/
+dist/
+*.tsbuildinfo
+test-results/
+playwright-report/
+.vite/
+.npm-cache/
+.verification/
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
