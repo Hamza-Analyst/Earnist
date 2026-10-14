@@ -1,0 +1,11 @@
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import { BrowserRouter } from 'react-router-dom';
+import { StoreProvider } from './data/Store';
+import './styles.css';
+import './presentation.css';
+import './theme.css';
+import { ThemeProvider } from './components/Theme';
+import { AuthProvider } from './data/Auth';
+ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><ThemeProvider><BrowserRouter><StoreProvider><AuthProvider><App /></AuthProvider></StoreProvider></BrowserRouter></ThemeProvider></React.StrictMode>);
